@@ -84,7 +84,7 @@ def index():
         else:
             # Show the name input modal
             modal_data = {
-                'title': "👤 What's Your Name?",
+                'title': "👤 What Is Your Name?",
                 'body': '''
                     <form method="POST">
                         <input type="hidden" name="action" value="set_name">
