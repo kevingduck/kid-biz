@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>📚 {{ user_name }}'s Bookstore 📚</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <!-- Fixed Stats Header -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-light fixed-top">
+        <div class="container-fluid">
+            <span class="navbar-brand mb-0 h1">🏦 Bookshop Stats</span>
+            <div class="d-flex">
+                <span class="navbar-text me-3">💵 Dollars: ${{ dollars }}</span>
+                <span class="navbar-text me-3">📚 Inventory: {{ inventory|length }}</span>
+                <span class="navbar-text">📅 Day: {{ day }}</span>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container mt-5 pt-4">
+        <h1 class="mb-4">📚 {{ user_name }}'s Bookstore 📚</h1>
+        <!-- Blurb at the top -->
+        <p class="blurb">Welcome to your Bookstore! Buy books, set your prices, and sell to customers to earn dollars.</p>
+
+        <!-- Buy Books Section -->
+        <div class="section">
+            <h3>🛒 Buy Books</h3>
+            <form method="POST">
+                <input type="hidden" name="action" value="buy_books">
+                <div class="row g-3 align-items-end">
+                    <div class="col-md-4">
+                        <label for="selected_book" class="form-label">📚 Select Book:</label>
+                        <select id="selected_book" name="selected_book" class="form-select large-input" required>
+                            {% for book in book_list %}
+                                <option value="{{ book }}">{{ book }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    
+                    <div class="col-md-3">
+                        <label for="quantity" class="form-label">🔢 Quantity:</label>
+                        <input type="number" id="quantity" name="quantity" min="1" max="10" value="1" class="form-control large-input" required>
+                    </div>
+                    
+                    <div class="col-md-3">
+                        <label for="buy_price" class="form-label">💲 Price per Book:</label>
+                        <select id="buy_price" name="buy_price" class="form-select large-input">
+                            <option value="1">$1</option>
+                            <option value="2">$2</option>
+                        </select>
+                    </div>
+                    
+                    <div class="col-md-2">
+                        <button type="submit" class="btn btn-primary large-button w-100">🛍️ Buy</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+
+        <!-- Your Shop Section -->
+        <div class="section">
+            <h3>🏬 Your Shop</h3>
+            {% if inventory %}
+                <form method="POST">
+                    <input type="hidden" name="action" value="set_prices">
+                    <table class="table table-bordered">
+                        <thead class="table-light">
+                            <tr>
+                                <th>📖 Book #</th>
+                                <th>📚 Title</th>
+                                <th>💲 Buy Price</th>
+                                <th>💰 Set Sell Price ($)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for book in inventory %}
+                            <tr>
+                                <td>{{ loop.index }}</td>
+                                <td>{{ book.title }}</td>
+                                <td>${{ book.buy_price }}</td>
+                                <td>
+                                    <input type="number" name="sell_price" min="1" value="{{ book.sell_price }}" class="form-control large-input" required>
+                                    <input type="hidden" name="book_id" value="{{ book.id }}">
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                    <button type="submit" class="btn btn-success large-button">✏️ Set Prices</button>
+                </form>
+            {% else %}
+                <p class="no-books">🚫 No books in inventory. Buy some!</p>
+            {% endif %}
+        </div>
+
+        <!-- Open Shop Section -->
+        <div class="section actions">
+            <h3>⚙️ Actions</h3>
+            <form method="POST" style="display:inline-block; margin-right: 10px;">
+                <input type="hidden" name="action" value="open_shop">
+                <button type="submit" class="btn btn-warning large-button">🏪 Open Shop & Sell 📈</button>
+            </form>
+            <form action="{{ url_for('reset') }}" method="get" style="display:inline-block;">
+                <button type="submit" class="btn btn-danger large-button">🔄 Reset Game</button>
+            </form>
+        </div>
+
+        <!-- Messages Log -->
+        <div class="section messages">
+            <h3>📣 Messages</h3>
+            <ul>
+                {% for message in messages %}
+                    <li>{{ message | safe }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="actionModal" tabindex="-1" aria-labelledby="modalTitle" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="modalTitle">📢 Action Summary</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body" id="modalBody">
+            <!-- Content will be injected by JavaScript -->
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">👍 Okay</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Bootstrap JS and dependencies (Popper) -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Custom JS to handle modal -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            {% if modal_data %}
+                var modal = new bootstrap.Modal(document.getElementById('actionModal'), {});
+                document.getElementById('modalTitle').innerText = "{{ modal_data.title }}";
+                var modalBody = `{{ modal_data.body | safe }}`;
+                document.getElementById('modalBody').innerHTML = modalBody;
+                modal.show();
+            {% endif %}
+        });
+    </script>
+</body>
+</html>

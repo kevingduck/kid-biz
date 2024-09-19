@@ -1,0 +1,197 @@
+/* Ensure body padding to prevent content from being hidden behind the fixed navbar */
+body {
+    font-family: 'Comic Sans MS', cursive, sans-serif;
+    background-color: #f0f8ff;
+    text-align: center;
+    margin: 0;
+    padding-top: 70px; /* Height of the navbar */
+}
+
+.navbar {
+    background-color: #e3f2fd !important;
+}
+
+.navbar-brand {
+    font-size: 1.5em;
+    font-weight: bold;
+}
+
+.navbar-text {
+    font-size: 1.2em;
+}
+
+.container {
+    width: 95%;
+    max-width: 900px;
+    margin: auto;
+    padding: 20px;
+    background-color: #ffffff;
+    border: 3px solid #87ceeb;
+    border-radius: 15px;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+}
+
+h1 {
+    color: #4682b4;
+    font-size: 2.5em;
+    margin-bottom: 10px;
+}
+
+.blurb {
+    font-size: 1.2em;
+    color: #555555;
+    margin-bottom: 25px;
+}
+
+.section {
+    margin: 25px 0;
+    padding: 15px;
+    border-top: 2px solid #87ceeb;
+}
+
+.section h3 {
+    font-size: 1.8em;
+    color: #4682b4;
+    margin-bottom: 15px;
+}
+
+label {
+    font-size: 1.2em;
+    display: block;
+    margin-bottom: 5px;
+}
+
+.large-input {
+    font-size: 1.2em;
+    padding: 10px;
+}
+
+.large-button {
+    padding: 15px 30px;
+    font-size: 1.2em;
+    margin-top: 10px;
+    border-radius: 10px;
+}
+
+.reset-button {
+    background-color: #ff6347 !important;
+}
+
+.reset-button:hover {
+    background-color: #ff4500 !important;
+}
+
+.no-books {
+    font-size: 1.3em;
+    color: #ff4500;
+}
+
+.messages {
+    text-align: left;
+}
+
+.messages ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+.messages li {
+    background-color: #e0ffff;
+    margin: 8px 0;
+    padding: 12px;
+    border-radius: 8px;
+    font-size: 1.1em;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+}
+
+.messages li::before {
+    content: "📢 ";
+    margin-right: 10px;
+}
+
+.table th, .table td {
+    text-align: center;
+    vertical-align: middle;
+    font-size: 1.1em;
+}
+
+.table th {
+    background-color: #add8e6;
+}
+
+.btn-primary {
+    background-color: #87ceeb;
+    border: none;
+    font-size: 1.2em;
+}
+
+.btn-primary:hover {
+    background-color: #00bfff;
+}
+
+.btn-success {
+    background-color: #28a745;
+    border: none;
+    font-size: 1.2em;
+}
+
+.btn-success:hover {
+    background-color: #218838;
+}
+
+.btn-warning {
+    background-color: #ffc107;
+    border: none;
+    font-size: 1.2em;
+}
+
+.btn-warning:hover {
+    background-color: #e0a800;
+}
+
+.btn-danger {
+    background-color: #dc3545;
+    border: none;
+    font-size: 1.2em;
+}
+
+.btn-danger:hover {
+    background-color: #c82333;
+}
+
+.btn-secondary {
+    background-color: #6c757d;
+    border: none;
+    font-size: 1.2em;
+}
+
+.btn-secondary:hover {
+    background-color: #5a6268;
+}
+
+/* Modal Customization */
+.modal-title {
+    font-size: 1.5em;
+}
+
+.modal-body {
+    font-size: 1.2em;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    /* Adjust layout for smaller screens */
+    .row.g-3 {
+        flex-direction: column;
+    }
+
+    .col-md-4, .col-md-3, .col-md-2 {
+        width: 100%;
+    }
+
+    .btn {
+        width: 100%;
+    }
+}
